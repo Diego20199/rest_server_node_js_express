@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const { dbConnection } = require('../database/config');
 
 class Server {
   constructor() {
@@ -8,10 +9,18 @@ class Server {
     //esto es el path y cada metodo se activara cuando se solitite y vea de que tipo es(put get, etc)
     this.userRoutesPath = '/api/usuarios';
 
+    //conectar a DB
+    this.databaseConnection();
+
     //Midleewares // es un funcion que siempre se ejecuta al levantar nuestro server
     this.middlewares();
     //rutas
     this.routes();
+  }
+
+  async databaseConnection(){
+    await dbConnection();
+
   }
 
   middlewares() {
@@ -33,7 +42,7 @@ class Server {
 
   lisen() {
     this.app.listen(this.port, () => {
-      console.log('Servicor corriendo en el puerto: ', this.port);
+      console.log('Servidor corriendo en el puerto: ', this.port);
     });
   }
 }
